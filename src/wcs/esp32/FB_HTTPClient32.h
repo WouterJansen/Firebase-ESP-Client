@@ -39,7 +39,7 @@
 #include <WiFiClient.h>
 #include <FS.h>
 #include <SPIFFS.h>
-#include <SD.h>
+#include <SD_MMC.h>
 #include "wcs/esp32/FB_WCS32.h"
 #if __has_include(<WiFiEspAT.h>) || __has_include(<espduino.h>)
 #error WiFi UART bridge was not supported.

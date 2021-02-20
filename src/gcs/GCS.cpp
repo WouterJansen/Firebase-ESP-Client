@@ -243,12 +243,12 @@ bool GG_CloudStorage::gcs_sendRequest(FirebaseData *fbdo, struct fb_esp_gcs_req_
     {
         if (req->storageType == mem_storage_type_sd)
         {
-            if (!ut->sdTest(Signer.getCfg()->_int.fb_file))
-            {
-                fbdo->_ss.http_code = FIREBASE_ERROR_FILE_IO_ERROR;
-                return false;
-            }
-            Signer.getCfg()->_int.fb_file = SD.open(req->localFileName.c_str(), FILE_WRITE);
+            // if (!ut->sdTest(Signer.getCfg()->_int.fb_file))
+            // {
+            //     fbdo->_ss.http_code = FIREBASE_ERROR_FILE_IO_ERROR;
+            //     return false;
+            // }
+            Signer.getCfg()->_int.fb_file = SD_MMC.open(req->localFileName.c_str(), FILE_WRITE);
         }
         else if (req->storageType == mem_storage_type_flash)
         {
@@ -263,25 +263,25 @@ bool GG_CloudStorage::gcs_sendRequest(FirebaseData *fbdo, struct fb_esp_gcs_req_
         {
             if (req->storageType == mem_storage_type_sd)
             {
-                if (!ut->sdTest(Signer.getCfg()->_int.fb_file))
-                {
-                    fbdo->_ss.http_code = FIREBASE_ERROR_FILE_IO_ERROR;
-                    return false;
-                }
+                // if (!ut->sdTest(Signer.getCfg()->_int.fb_file))
+                // {
+                //     fbdo->_ss.http_code = FIREBASE_ERROR_FILE_IO_ERROR;
+                //     return false;
+                // }
 
-                if (!Signer.getCfg()->_int.fb_sd_rdy)
-                {
-                    fbdo->_ss.http_code = FIREBASE_ERROR_FILE_IO_ERROR;
-                    return false;
-                }
+                // if (!Signer.getCfg()->_int.fb_sd_rdy)
+                // {
+                //     fbdo->_ss.http_code = FIREBASE_ERROR_FILE_IO_ERROR;
+                //     return false;
+                // }
 
-                if (!SD.exists(req->localFileName.c_str()))
-                {
-                    fbdo->_ss.http_code = FIREBASE_ERROR_FILE_IO_ERROR;
-                    return false;
-                }
+                // if (!SD_MMC.exists(req->localFileName.c_str()))
+                // {
+                //     fbdo->_ss.http_code = FIREBASE_ERROR_FILE_IO_ERROR;
+                //     return false;
+                // }
 
-                Signer.getCfg()->_int.fb_file = SD.open(req->localFileName.c_str(), FILE_READ);
+                Signer.getCfg()->_int.fb_file = SD_MMC.open(req->localFileName.c_str(), FILE_READ);
             }
             else if (req->storageType == mem_storage_type_flash)
             {

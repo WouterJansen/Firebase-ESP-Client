@@ -33,7 +33,7 @@
 #include <Arduino.h>
 #include <SPI.h>
 #include <time.h>
-#include <SD.h>
+#include <SD_MMC.h>
 #include <vector>
 #include <functional>
 #if defined(ESP32)

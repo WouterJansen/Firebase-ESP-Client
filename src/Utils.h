@@ -869,7 +869,7 @@ public:
                 if (dir.length() > 0)
                 {
                     if (storageType == mem_storage_type_sd)
-                        SD.mkdir(dir.substr(0, dir.length() - 1).c_str());
+                        SD_MMC.mkdir(dir.substr(0, dir.length() - 1).c_str());
                 }
 
                 count = 0;
@@ -878,7 +878,7 @@ public:
         if (count > 0)
         {
             if (storageType == mem_storage_type_sd)
-                SD.mkdir(dir.c_str());
+                SD_MMC.mkdir(dir.c_str());
         }
         std::string().swap(dir);
     }
@@ -891,7 +891,7 @@ public:
         {
             config->_int.fb_sd_used = false;
             config->_int.fb_sd_rdy = false;
-            SD.end();
+            SD_MMC.end();
         }
     }
 
@@ -1057,7 +1057,7 @@ public:
         if (storageType == mem_storage_type_flash)
             file = FLASH_FS.open(filePath.c_str(), "r");
         else if (storageType == mem_storage_type_sd)
-            file = SD.open(filePath.c_str(), FILE_READ);
+            file = SD_MMC.open(filePath.c_str(), FILE_READ);
 
         if (!file)
             return;
@@ -1383,9 +1383,9 @@ public:
     {
         std::string filepath = "/sdtest01.txt";
 
-        SD.begin(SD_CS_PIN);
+        SD_MMC.begin();
 
-        file = SD.open(filepath.c_str(), FILE_WRITE);
+        file = SD_MMC.open(filepath.c_str(), FILE_WRITE);
         if (!file)
             return false;
 
@@ -1397,7 +1397,7 @@ public:
 
         file.close();
 
-        file = SD.open(filepath.c_str());
+        file = SD_MMC.open(filepath.c_str());
         if (!file)
             return false;
 
@@ -1411,7 +1411,7 @@ public:
         }
         file.close();
 
-        SD.remove(filepath.c_str());
+        SD_MMC.remove(filepath.c_str());
 
         std::string().swap(filepath);
 

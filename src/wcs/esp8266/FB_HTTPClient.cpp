@@ -201,13 +201,13 @@ void FB_HTTPClient::setCACertFile(const char* caCertFile, uint8_t storageType, u
     }
     else if (storageType == 2)
     {
-      bool t = SD.begin(_sdPin);
+      bool t = SD_MMC.begin();
       if (t)
       {
         File f;
-        if (SD.exists(caCertFile))
+        if (SD_MMC.exists(caCertFile))
         {
-          f = SD.open(caCertFile, FILE_READ);
+          f = SD_MMC.open(caCertFile, FILE_READ);
           size_t len = f.size();
           uint8_t *der = new uint8_t[len];
           if (f.available())

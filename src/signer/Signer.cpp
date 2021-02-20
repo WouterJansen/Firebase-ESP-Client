@@ -68,8 +68,8 @@ bool Firebase_Signer::parseSAFile()
         }
         else
         {
-            if (SD.exists(config->service_account.json.path.c_str()))
-                config->_int.fb_file = SD.open(config->service_account.json.path.c_str(), "r");
+            if (SD_MMC.exists(config->service_account.json.path.c_str()))
+                config->_int.fb_file = SD_MMC.open(config->service_account.json.path.c_str(), "r");
         }
 
         if (config->_int.fb_file)

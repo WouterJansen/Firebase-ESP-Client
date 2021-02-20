@@ -80,7 +80,7 @@ using namespace axTLS;
 
 #define FS_NO_GLOBALS
 #include <FS.h>
-#include <SD.h>
+#include <SD_MMC.h>
 #include "FirebaseFS.h"
 
 #ifdef USE_LITTLEFS

@@ -155,7 +155,7 @@ void FB_HTTPClient32::setCACertFile(const char *caCertFile, uint8_t storageType,
         if (storageType == 0)
             t = FLASH_FS.begin(true);
         else
-            t = SD.begin();
+            t = SD_MMC.begin();
         if (!t)
             return;
 
@@ -167,8 +167,8 @@ void FB_HTTPClient32::setCACertFile(const char *caCertFile, uint8_t storageType,
         }
         else if (storageType == 2)
         {
-            if (SD.exists(caCertFile))
-                f = SD.open(caCertFile, FILE_READ);
+            if (SD_MMC.exists(caCertFile))
+                f = SD_MMC.open(caCertFile, FILE_READ);
         }
 
         if (f)

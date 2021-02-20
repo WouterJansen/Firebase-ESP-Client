@@ -2975,9 +2975,9 @@ bool FB_RTDB::saveErrorQueue(FirebaseData *fbdo, const char *filename, fb_esp_me
 
     if (storageType == mem_storage_type_sd)
     {
-        if (!ut->sdTest(Signer.getCfg()->_int.fb_file))
-            return false;
-        Signer.getCfg()->_int.fb_file = SD.open(filename, FILE_WRITE);
+        // if (!ut->sdTest(Signer.getCfg()->_int.fb_file))
+        //     return false;
+        Signer.getCfg()->_int.fb_file = SD_MMC.open(filename, FILE_WRITE);
     }
     else if (storageType == mem_storage_type_flash)
     {
@@ -3060,9 +3060,9 @@ bool FB_RTDB::deleteStorageFile(const char *filename, fb_esp_mem_storage_type st
 
     if (storageType == mem_storage_type_sd)
     {
-        if (!ut->sdTest(Signer.getCfg()->_int.fb_file))
-            return false;
-        return SD.remove(filename);
+        // if (!ut->sdTest(Signer.getCfg()->_int.fb_file))
+        //     return false;
+        return SD_MMC.remove(filename);
     }
     else
     {
@@ -3079,9 +3079,9 @@ uint8_t FB_RTDB::openErrorQueue(FirebaseData *fbdo, const char *filename, fb_esp
 
     if (storageType == mem_storage_type_sd)
     {
-        if (!ut->sdTest(Signer.getCfg()->_int.fb_file))
-            return 0;
-        Signer.getCfg()->_int.fb_file = SD.open(filename, FILE_READ);
+        // if (!ut->sdTest(Signer.getCfg()->_int.fb_file))
+        //     return 0;
+        Signer.getCfg()->_int.fb_file = SD_MMC.open(filename, FILE_READ);
     }
     else if (storageType == mem_storage_type_flash)
     {
@@ -3519,7 +3519,7 @@ int FB_RTDB::sendRequest(FirebaseData *fbdo, struct fb_esp_rtdb_request_info_t *
             }
 
             if (!Signer.getCfg()->_int.fb_sd_rdy)
-                Signer.getCfg()->_int.fb_sd_rdy = ut->sdTest(Signer.getCfg()->_int.fb_file);
+                Signer.getCfg()->_int.fb_sd_rdy = true;
 
             if (!Signer.getCfg()->_int.fb_sd_rdy)
             {
@@ -3541,8 +3541,8 @@ int FB_RTDB::sendRequest(FirebaseData *fbdo, struct fb_esp_rtdb_request_info_t *
                 }
                 else if (fbdo->_ss.rtdb.storage_type == mem_storage_type_sd)
                 {
-                    SD.remove(fbdo->_ss.rtdb.backup_filename.c_str());
-                    Signer.getCfg()->_int.fb_file = SD.open(fbdo->_ss.rtdb.backup_filename.c_str(), FILE_WRITE);
+                    SD_MMC.remove(fbdo->_ss.rtdb.backup_filename.c_str());
+                    Signer.getCfg()->_int.fb_file = SD_MMC.open(fbdo->_ss.rtdb.backup_filename.c_str(), FILE_WRITE);
                 }
             }
             else if (req->method == fb_esp_method::m_restore)
@@ -3550,8 +3550,8 @@ int FB_RTDB::sendRequest(FirebaseData *fbdo, struct fb_esp_rtdb_request_info_t *
 
                 if (fbdo->_ss.rtdb.storage_type == mem_storage_type_flash && FLASH_FS.exists(fbdo->_ss.rtdb.backup_filename.c_str()))
                     Signer.getCfg()->_int.fb_file = FLASH_FS.open(fbdo->_ss.rtdb.backup_filename.c_str(), "r");
-                else if (fbdo->_ss.rtdb.storage_type == mem_storage_type_sd && SD.exists(fbdo->_ss.rtdb.backup_filename.c_str()))
-                    Signer.getCfg()->_int.fb_file = SD.open(fbdo->_ss.rtdb.backup_filename.c_str(), FILE_READ);
+                else if (fbdo->_ss.rtdb.storage_type == mem_storage_type_sd && SD_MMC.exists(fbdo->_ss.rtdb.backup_filename.c_str()))
+                    Signer.getCfg()->_int.fb_file = SD_MMC.open(fbdo->_ss.rtdb.backup_filename.c_str(), FILE_READ);
                 else
                 {
                     ut->appendP(fbdo->_ss.error, fb_esp_pgm_str_83, true);
@@ -3580,8 +3580,8 @@ int FB_RTDB::sendRequest(FirebaseData *fbdo, struct fb_esp_rtdb_request_info_t *
                 }
                 else if (fbdo->_ss.rtdb.storage_type == mem_storage_type_sd)
                 {
-                    if (SD.exists(fbdo->_ss.rtdb.file_name.c_str()))
-                        Signer.getCfg()->_int.fb_file = SD.open(fbdo->_ss.rtdb.file_name.c_str(), FILE_READ);
+                    if (SD_MMC.exists(fbdo->_ss.rtdb.file_name.c_str()))
+                        Signer.getCfg()->_int.fb_file = SD_MMC.open(fbdo->_ss.rtdb.file_name.c_str(), FILE_READ);
                     else
                     {
                         ut->appendP(fbdo->_ss.error, fb_esp_pgm_str_83, true);
@@ -3607,12 +3607,12 @@ int FB_RTDB::sendRequest(FirebaseData *fbdo, struct fb_esp_rtdb_request_info_t *
                 else if (fbdo->_ss.rtdb.storage_type == mem_storage_type_sd)
                 {
 
-                    if (!SD.exists(folder.c_str()))
+                    if (!SD_MMC.exists(folder.c_str()))
                         ut->createDirs(folder, fbdo->_ss.rtdb.storage_type);
 
-                    SD.remove(fbdo->_ss.rtdb.file_name.c_str());
+                    SD_MMC.remove(fbdo->_ss.rtdb.file_name.c_str());
 
-                    Signer.getCfg()->_int.fb_file = SD.open(fbdo->_ss.rtdb.file_name.c_str(), FILE_WRITE);
+                    Signer.getCfg()->_int.fb_file = SD_MMC.open(fbdo->_ss.rtdb.file_name.c_str(), FILE_WRITE);
                 }
                 std::string().swap(folder);
             }
